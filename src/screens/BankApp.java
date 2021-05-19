@@ -1,4 +1,6 @@
+package screens;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -15,34 +17,46 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import backend.CheckBalance;
+import backend.Deposit;
+import backend.PastTransactions;
+import backend.Withdraw;
+import tools.DisabledPanel;
 import tools.ImagePanel;
 
 public class BankApp extends JFrame implements ActionListener{
 	private int frameWidth, frameHeight;
+	private String fullName, userID;
 	private Dimension screenSize;
 	private JPanel bannerPanel, introPanel, buttonPanel;
+	private DisabledPanel dButtonPanel;
 	private JButton checkBalance, deposit, withdraw, pastTransactions, logout;
 	
-	public BankApp() {
-		super("Nikko's Banking App"); 			
+	public BankApp(String fullName, String id) {
+		super("Nikko's Banking App (ID:" + id + ")"); 	
+		this.userID = id;
+		this.fullName = fullName;
+		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();	
-		
-		this.frameWidth = (int) (this.screenSize.getWidth()/4);
-		this.frameHeight = (int) (this.screenSize.getHeight()/1.5);
-		this.setSize(new Dimension(frameWidth, frameHeight)); 	//Nikko: possible loss in precision
+		this.frameWidth = (int) (this.screenSize.getWidth()/4); 			//Nikko: possible loss in precision
+		this.frameHeight = (int) (this.screenSize.getHeight()/1.5);			//Nikko: possible loss in precision
+		this.setSize(new Dimension(frameWidth, frameHeight)); 	
 		this.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 30));	
 		this.setResizable(false);
-		this.setLocationRelativeTo(null);	// centers the application
-
+		this.setLocationRelativeTo(null);									// centers the application
+		
 		// components
 		addComponents();
+
 		
 		this.repaint();
 		this.setVisible(true);
 	}
 	
 	public void addComponents() {
+		Color disableColor = Color.BLUE; // color of the components when they are disabled
+		
 		bannerPanel = new JPanel(); // contains the logo 
 		addBanner(bannerPanel);
 		
@@ -50,14 +64,18 @@ public class BankApp extends JFrame implements ActionListener{
 		addIntro(introPanel);
 		
 		buttonPanel = new JPanel(); // contains the buttons 
-		buttonPanel.setPreferredSize(new Dimension((int)(frameWidth/1.3), frameHeight/2));
+		buttonPanel.setPreferredSize(new Dimension((int)(frameWidth/1.3), frameHeight/2)); //Nikko: possible loss in precision
 		buttonPanel.setLayout(new GridLayout(5,1,10,20));
 		addButtons(buttonPanel);
+
+		dButtonPanel = new DisabledPanel(buttonPanel);
+		dButtonPanel.setDisabledColor(disableColor);
 		
 		this.getContentPane().add(bannerPanel);
 		this.getContentPane().add(introPanel);
 		this.getContentPane().add(buttonPanel);
 	}
+	
 	
 	public void addBanner(JPanel bannerPanel) {
 		ImagePanel bannerImage = new ImagePanel("banner.png");
@@ -66,7 +84,7 @@ public class BankApp extends JFrame implements ActionListener{
 	
 	public void addIntro(JPanel introPanel) {
 		// User Introduction
-		JTextField intro = new JTextField("Welcome -enter_name-, ID: 0123123"); // Nikko: dummy values are placed for now
+		JTextField intro = new JTextField("Welcome " + this.fullName + ". ID: " + userID); // Nikko: dummy values are placed for now
 		intro.setEditable(false);
 		introPanel.add(intro);	
 	}
@@ -105,21 +123,35 @@ public class BankApp extends JFrame implements ActionListener{
 		buttonPanel.add(logout);
 	}
 
+	
+	public JPanel getButtonPanel() {return this.buttonPanel;}
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
+		
+		//Nikko: this might not be resourceful (i.e. creating a new object), instead possibly use static objects
 		switch(command){
 			case "Check Balance":
+				CheckBalance cBalance = new CheckBalance(this, this.userID); 
 				break;
 			case "Deposit":
+				Deposit deposit = new Deposit(this, this.userID);
 				break;
 			case "Withdraw":
+				Withdraw withdraw = new Withdraw(this, this.userID);
 				break;
 			case "Past Transactions":
+				PastTransactions pastTransactions = new PastTransactions(this, this.userID);
 				break;
 			case "Logout":
+				Login login = new Login();
 				break;
 		}
+		
+		this.setFocusableWindowState(false);
+		DisabledPanel.disable(buttonPanel);
 	}
 	
 }
