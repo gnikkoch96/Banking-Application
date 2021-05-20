@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import dialogs.Verification;
+import dialogs.VerificationDialog;
 import screens.BankApp;
 import tools.DisabledPanel;
 
@@ -23,6 +23,7 @@ public class Withdraw extends JFrame implements ActionListener{
 	
 	private BankApp app;
 	private JPanel balancePanel, depositPanel, buttonPanel;
+	private JTextField balanceField, withdrawField, withdrawInput;
 	private JButton submitButton, backButton, exitButton;
 	private Dimension screenSize;
 	
@@ -66,7 +67,7 @@ public class Withdraw extends JFrame implements ActionListener{
 	}
 
 	public void addBalanceComponents(JPanel balancePanel) {
-		JTextField balanceField = new JTextField("Balance: $" + this.balance);
+		balanceField = new JTextField("Balance: $" + this.balance);
 		balanceField.setFont(new Font("Dialog", Font.PLAIN, 20));
 		balanceField.setEditable(false);
 		balancePanel.add(balanceField);
@@ -84,24 +85,29 @@ public class Withdraw extends JFrame implements ActionListener{
 	}
 
 	public void addDepositComponents(JPanel depositPanel) {
-		JTextField depositLabel = new JTextField("Withdraw Amount: ");
-		depositLabel.setFont(new Font("Dialog", Font.PLAIN, 15));
-		depositLabel.setEditable(false);
+		withdrawField = new JTextField("Withdraw Amount: $");
+		withdrawField.setFont(new Font("Dialog", Font.PLAIN, 15));
+		withdrawField.setEditable(false);
 		
-		JTextField depositInput = new JTextField(10);
-		depositInput.setFont(new Font("Dialog", Font.PLAIN, 15));
+		withdrawInput = new JTextField(10);
+		withdrawInput.setText("0.00");
+		withdrawInput.setFont(new Font("Dialog", Font.PLAIN, 15));
 
 		submitButton = new JButton("Submit");
 		submitButton.addActionListener(this);
 		
-		depositPanel.add(depositLabel);
-		depositPanel.add(depositInput);
+		depositPanel.add(withdrawField);
+		depositPanel.add(withdrawInput);
 		depositPanel.add(submitButton);
 	}
    
 	public void submit() {
-		Verification depositVerification = new Verification(this, this.frameWidth, this.frameHeight);
+		VerificationDialog depositVerification = new VerificationDialog(this, this.frameWidth, this.frameHeight, Double.parseDouble(withdrawInput.getText()));
 		depositVerification.setVisible(true);
+	}
+	
+	public static void reduceBalance(double amount) {
+		
 	}
    
 	@Override

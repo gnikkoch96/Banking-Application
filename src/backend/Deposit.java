@@ -12,18 +12,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import dialogs.Verification;
+import dialogs.VerificationDialog;
 import screens.BankApp;
 import tools.DisabledPanel;
 
 public class Deposit extends JFrame implements ActionListener{
-
 	private String userID;
 	private int frameWidth, frameHeight;
 	private double balance;
 	
 	private BankApp app;
 	private JPanel balancePanel, depositPanel, buttonPanel;
+	private JTextField balanceField, depositInput, depositLabel;
 	private JButton submitButton, backButton, exitButton;
 	private Dimension screenSize;
 	
@@ -67,7 +67,7 @@ public class Deposit extends JFrame implements ActionListener{
 	}
 
 	public void addBalanceComponents(JPanel balancePanel) {
-		JTextField balanceField = new JTextField("Balance: $" + this.balance);
+		balanceField = new JTextField("Balance: $" + this.balance);
 		balanceField.setFont(new Font("Dialog", Font.PLAIN, 20));
 		balanceField.setEditable(false);
 		balancePanel.add(balanceField);
@@ -85,11 +85,12 @@ public class Deposit extends JFrame implements ActionListener{
 	}
 
 	public void addDepositComponents(JPanel depositPanel) {
-		JTextField depositLabel = new JTextField("Deposit Amount: ");
+		depositLabel = new JTextField("Deposit Amount: $");
 		depositLabel.setFont(new Font("Dialog", Font.PLAIN, 15));
 		depositLabel.setEditable(false);
 		
-		JTextField depositInput = new JTextField(10);
+		depositInput = new JTextField(10);
+		depositInput.setText("0.00");
 		depositInput.setFont(new Font("Dialog", Font.PLAIN, 15));
 
 		submitButton = new JButton("Submit");
@@ -100,9 +101,8 @@ public class Deposit extends JFrame implements ActionListener{
 		depositPanel.add(submitButton);
 	}
    
-	public void submit() {
-		Verification depositVerification = new Verification(this, this.frameWidth, this.frameHeight);
-		depositVerification.setVisible(true);
+	public static void addBalance(double amount) {
+		
 	}
    
 	@Override
@@ -118,7 +118,7 @@ public class Deposit extends JFrame implements ActionListener{
 				System.exit(0);
 				break;
 			case "Submit":
-				submit();
+				VerificationDialog depositVerification = new VerificationDialog(this, this.frameWidth, this.frameHeight, Double.parseDouble(depositInput.getText()));
 				break;
 		}
 	}

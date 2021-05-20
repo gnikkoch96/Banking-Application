@@ -14,7 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import dialogs.Verification;
 import screens.BankApp;
 import tools.DisabledPanel;
 
@@ -28,6 +27,8 @@ public class PastTransactions extends JFrame implements ActionListener{
 	private JButton submitButton, backButton, exitButton;
 	
 	private JTextArea historyArea;
+	private JScrollPane scrollArea;
+	
 	private Dimension screenSize;
 	
 	public PastTransactions(BankApp app, String id) { 
@@ -48,7 +49,7 @@ public class PastTransactions extends JFrame implements ActionListener{
 		
 		// components
 		addComponents();
-	
+
 		this.repaint();
 		this.requestFocus();
 		this.setVisible(true);
@@ -59,6 +60,7 @@ public class PastTransactions extends JFrame implements ActionListener{
 		addTitleComponents(titlePanel);
 		
 		historyPanel = new JPanel();
+		historyPanel.setLayout(new BorderLayout());
 		addHistoryComponents(historyPanel);
 		
 		buttonPanel = new JPanel();
@@ -78,16 +80,14 @@ public class PastTransactions extends JFrame implements ActionListener{
 	}
 	
 	public void addHistoryComponents(JPanel historyPanel) {
-		JTextArea historyArea = new JTextArea(25,25);
+		historyArea = new JTextArea();
 		historyArea.setFont(new Font("Dialog", Font.PLAIN, 15));
 		historyArea.setLineWrap(true);
 		
-		JScrollPane scroll = new JScrollPane(historyArea);
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollArea = new JScrollPane(historyArea);
+		scrollArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
-		this.getContentPane().add(scroll);
-		historyPanel.add(historyArea);
-
+		historyPanel.add(scrollArea);
 	}
 
 	public void addButtonComponents(JPanel buttonPanel) {

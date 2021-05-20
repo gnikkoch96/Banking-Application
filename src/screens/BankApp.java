@@ -25,9 +25,11 @@ import tools.DisabledPanel;
 import tools.ImagePanel;
 
 public class BankApp extends JFrame implements ActionListener{
-	private int frameWidth, frameHeight;
+	private static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
+	private static final int FRAME_WIDTH = (int) (SCREEN_SIZE.getWidth()/4);	 //Nikko: possible loss in precision
+	private static final int FRAME_HEIGHT = (int) (SCREEN_SIZE.getHeight()/1.5); //Nikko: possible loss in precision
+	
 	private String fullName, userID;
-	private Dimension screenSize;
 	private JPanel bannerPanel, introPanel, buttonPanel;
 	private DisabledPanel dButtonPanel;
 	private JButton checkBalance, deposit, withdraw, pastTransactions, logout;
@@ -36,15 +38,11 @@ public class BankApp extends JFrame implements ActionListener{
 		super("Nikko's Banking App (ID:" + id + ")"); 	
 		this.userID = id;
 		this.fullName = fullName;
-		
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();	
-		this.frameWidth = (int) (this.screenSize.getWidth()/4); 			//Nikko: possible loss in precision
-		this.frameHeight = (int) (this.screenSize.getHeight()/1.5);			//Nikko: possible loss in precision
-		this.setSize(new Dimension(frameWidth, frameHeight)); 	
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+		this.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT)); 	
 		this.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 30));	
 		this.setResizable(false);
-		this.setLocationRelativeTo(null);									// centers the application
+		this.setLocationRelativeTo(null);						
 		
 		// components
 		addComponents();
@@ -55,7 +53,7 @@ public class BankApp extends JFrame implements ActionListener{
 	}
 	
 	public void addComponents() {
-		Color disableColor = Color.BLUE; // color of the components when they are disabled
+		Color disableColor = Color.GRAY; // color of the components when they are disabled
 		
 		bannerPanel = new JPanel(); // contains the logo 
 		addBanner(bannerPanel);
@@ -64,7 +62,7 @@ public class BankApp extends JFrame implements ActionListener{
 		addIntro(introPanel);
 		
 		buttonPanel = new JPanel(); // contains the buttons 
-		buttonPanel.setPreferredSize(new Dimension((int)(frameWidth/1.3), frameHeight/2)); //Nikko: possible loss in precision
+		buttonPanel.setPreferredSize(new Dimension((int)(FRAME_WIDTH/1.3), FRAME_HEIGHT/2)); //Nikko: possible loss in precision
 		buttonPanel.setLayout(new GridLayout(5,1,10,20));
 		addButtons(buttonPanel);
 

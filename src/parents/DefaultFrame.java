@@ -15,6 +15,10 @@ import javax.swing.JTextField;
 import screens.BankApp;
 import tools.DisabledPanel;
 
+/*
+ * This class is mainly used for the back end classes that use JFrame
+ */
+
 public class DefaultFrame extends JFrame{
 	protected String userID;
 	protected int frameWidth, frameHeight;
@@ -47,23 +51,11 @@ public class DefaultFrame extends JFrame{
 	}
 	
 	
-	public void addComponents() {
+	protected void addComponents() {
 
 	}
 	
-	/*
-	 * @param balancePanel - panel to add the balance components in 
-	 */
-	public void addBalanceComponents(JPanel balancePanel) {
 
-	}
-	
-	/*
-	 * @param buttonPanel - panel to add the buttons in
-	 */
-	public void addButtonComponents(JPanel buttonPanel) {
-
-	}
 	  
 	
 }
