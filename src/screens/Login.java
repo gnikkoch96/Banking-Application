@@ -37,6 +37,7 @@ public class Login extends JFrame implements ActionListener{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		
 		addComponents();
 		
@@ -67,10 +68,9 @@ public class Login extends JFrame implements ActionListener{
 	
 	public void addLoginComponents(JPanel loginPanel) {
 		JPanel usernamePanel = new JPanel();
-		usernameLabel = new JLabel("Enter Username: " );
+		usernameLabel = new JLabel("Enter E-Mail      : " );
 		usernameLabel.setFont(new Font("Dialog", Font.PLAIN, 18));
 		usernameInput = new JTextField(20);
-		usernameInput.setDocument(new JTextFieldLimit(15));
 		usernamePanel.add(usernameLabel);
 		usernamePanel.add(usernameInput);
 		
@@ -110,16 +110,26 @@ public class Login extends JFrame implements ActionListener{
 		
 	}
 	
+	public void login() {
+		//verify email and password
+		
+		//load data (i.e. balance, past transactions, user's full name, and their id)
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		switch(command) {
 			case "Login":
+				login();
+				this.dispose();
 				break;
 			case "Exit":
 				System.exit(0);
 				break;
 			case "New User? Click Here!":
+				this.dispose();
+				Register register = new Register();
 				break;
 		}
 	}

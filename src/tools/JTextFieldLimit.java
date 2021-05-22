@@ -4,8 +4,8 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-
-public final class JTextFieldLimit extends PlainDocument {
+//This class is used along with JText Component to limit the amount of words entered
+public final class JTextFieldLimit extends PlainDocument { // we are writing to this document which is then updated in the JTextField
 	private final int limit;
 
 	public JTextFieldLimit(int limit) {
@@ -17,8 +17,8 @@ public final class JTextFieldLimit extends PlainDocument {
       throws BadLocationException {
 		if (str == null)
 			return;
-		
-		if ((getLength() + str.length()) <= limit) {
+
+		if ((super.getLength() + str.length()) <= limit) {
 			super.insertString(offs, str, a);
 		}
 	}

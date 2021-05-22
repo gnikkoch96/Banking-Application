@@ -144,6 +144,7 @@ public class BankApp extends JFrame implements ActionListener{
 				PastTransactions pastTransactions = new PastTransactions(this, this.userID);
 				break;
 			case "Logout":
+				this.dispose();
 				Login login = new Login();
 				break;
 		}
