@@ -83,6 +83,7 @@ public class PastTransactions extends JFrame implements ActionListener{
 		historyArea = new JTextArea();
 		historyArea.setFont(new Font("Dialog", Font.PLAIN, 15));
 		historyArea.setLineWrap(true);
+		historyArea.setEditable(false);
 		
 		scrollArea = new JScrollPane(historyArea);
 		scrollArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
