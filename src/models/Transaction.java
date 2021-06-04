@@ -2,7 +2,7 @@ package models;
 
 public class Transaction {
 	private int id; // primary key
-	private int user; 
+	private int user; // foreign key
 	private String activity;
 	private double amount;
 	

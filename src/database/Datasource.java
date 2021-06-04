@@ -2,9 +2,17 @@ package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.LinkedList;
+import java.util.List;
+
+import models.User;
+import models.Transaction;
 
 public class Datasource {
+	// The database that we are trying to connect to (I made it within the project) 
 	public static final String DB_NAME = "BankApp.db";
 	public static final String CONNECTION_STRING = "jdbc:sqlite:C:\\Users\\Nikko\\Documents\\GitHub\\Banking-Application\\src\\" + DB_NAME;
 	
@@ -40,8 +48,22 @@ public class Datasource {
 	
 	
 	// ORDER BY
-	public static enum ORDERBY{NONE, DESC, ASC};
+	public static final int ORDER_BY_NONE = 1;
+	public static final int ORDER_BY_ASC = 2;
+	public static final int ORDER_BY_DESC = 3;
 	
+	// Static Queries
+	public static final String QUERY_USER = 
+			"SELECT * FROM " + TABLE_USERS;
+	
+	public static final String QUERY_TRANSACTION_DETAILS = 
+			"SELECT " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_ID + ", " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_ACTIVITY
+				+ ", " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_AMOUNT + " FROM "+ TABLE_TRANSACTIONS 
+				+ " WHERE " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_USER + " =";
+	
+	public static final String QUERY_TRANSACTION_DETAILS_SORT = 
+			" ORDER BY " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_ID; 
+
 	
 	// Database Connections
 	private Connection conn;
@@ -52,7 +74,7 @@ public class Datasource {
 			return true;
 		}catch(SQLException e) {
 			System.out.println("Could not connect to database: " + e.getMessage());
-			return null;
+			return false;
 		}
 	}
 	
@@ -66,8 +88,55 @@ public class Datasource {
 		}
 	}
 	
+	public List<User> queryUser(){
+		StringBuilder sb = new StringBuilder(QUERY_USER);
+		
+		try(Statement statement = conn.createStatement();
+				ResultSet results = statement.executeQuery(sb.toString())){
+			List<User> users = new LinkedList<>();
+			while(results.next()) {
+				User user = new User();
+				user.setId(results.getInt(INDEX_USER_ID));
+				user.setfName(results.getString(INDEX_USER_FNAME));
+				user.setlName(results.getString(INDEX_USER_LNAME));
+				user.setEmail(results.getString(INDEX_USER_EMAIL));
+				user.setPassword(results.getString(INDEX_USER_PASS));
+				users.add(user);
+			}
+			return users;	
+		}catch(SQLException e) {
+			System.out.println("Query Failed: "+ e.getMessage());
+			return null;
+		}
+		
+	}
 	
-	
-	
+	public List<Transaction> queryTransactionDetails(int sortOrder, int userid){
+		StringBuilder sb = new StringBuilder(QUERY_TRANSACTION_DETAILS);
+		if(sortOrder != ORDER_BY_NONE) {
+			sb.append(QUERY_TRANSACTION_DETAILS_SORT);
+			if(sortOrder == ORDER_BY_DESC) {
+				sb.append(" DESC");
+			}else { // ASC
+				sb.append(" ASC");
+			}
+		}
+		try(Statement statement = conn.createStatement();
+				ResultSet results = statement.executeQuery(sb.toString())){
+			List<Transaction> transactions = new LinkedList<>();
+			while(results.next()) {
+				Transaction transaction = new Transaction();
+				transaction.setId(results.getInt(COLUMN_TRANSACTION_ID));
+				transaction.setActivity(results.getString(COLUMN_TRANSACTION_ACTIVITY));
+				transaction.setAmount(results.getDouble(COLUMN_TRANSACTION_AMOUNT));
+				transactions.add(transaction);
+			}
+			
+			return transactions;
+		}catch(SQLException e) {
+			System.out.println("Query Failed: " + e.getMessage());
+			return null;
+		}
+	}
 	
 }
