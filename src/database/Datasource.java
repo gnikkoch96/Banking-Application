@@ -15,7 +15,7 @@ public class Datasource {
 	// The database that we are trying to connect to (I made it within the project) 
 	public static final String DB_NAME = "BankApp.db";
 	public static final String CONNECTION_STRING = "jdbc:sqlite:C:\\Users\\Nikko\\Documents\\GitHub\\Banking-Application\\src\\" + DB_NAME;
-	
+
 	// Table Users
 	public static final String TABLE_USERS = "users";
 	public static final String COLUMN_USER_ID = "id";

@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import backend.BankingApplication;
+import dialogs.LoginSuccessfulDialog;
 import parents.DefaultFrame;
 import tools.ImagePanel;
 import tools.JTextFieldLimit;
@@ -49,7 +52,7 @@ public class Login extends JFrame implements ActionListener{
 		addBannerComponents(bannerPanel);
 		
 		loginPanel = new JPanel();
-		loginPanel.setLayout(new GridLayout(3, 1));
+		loginPanel.setLayout(new GridLayout(3, 1)); // layout is 4 x 1 (change the first value if you plan to add more components vertically
 		addLoginComponents(loginPanel);
 		
 		buttonPanel = new JPanel();
@@ -74,6 +77,7 @@ public class Login extends JFrame implements ActionListener{
 		usernamePanel.add(usernameLabel);
 		usernamePanel.add(usernameInput);
 		
+		
 		JPanel passwordPanel = new JPanel();
 		passwordLabel = new JLabel("Enter Password: ");
 		passwordLabel.setFont(new Font("Dialog", Font.PLAIN, 18));
@@ -89,6 +93,7 @@ public class Login extends JFrame implements ActionListener{
 		registerButton.addActionListener(this);
 		registerPanel.add(registerButton);
 
+		
 		loginPanel.add(usernamePanel);
 		loginPanel.add(passwordPanel);
 		loginPanel.add(registerPanel);
@@ -112,6 +117,16 @@ public class Login extends JFrame implements ActionListener{
 	
 	public void login() {
 		//verify email and password
+		if(BankingApplication.bankDB.verifyLogin(usernameInput.getText(), String.valueOf(passwordInput.getPassword()))) { // login successful
+			this.dispose();
+			String email = usernameInput.getText();
+			String name = BankingApplication.bankDB.getName(email);
+			String id = String.valueOf(BankingApplication.bankDB.getID(email));
+			BankApp bankApp = new BankApp(name, id); // pass name (fname + lname) and id
+			LoginSuccessfulDialog dialog = new LoginSuccessfulDialog(this, FRAME_WIDTH, FRAME_HEIGHT);
+		}else { // login failed
+				
+		}
 		
 		//load data (i.e. balance, past transactions, user's full name, and their id)
 	}
@@ -122,7 +137,6 @@ public class Login extends JFrame implements ActionListener{
 		switch(command) {
 			case "Login":
 				login();
-				this.dispose();
 				break;
 			case "Exit":
 				System.exit(0);
