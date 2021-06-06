@@ -53,6 +53,15 @@ public class BankDB {
 		}
 		return 0;
 	}
+	
+	public double getBalance(String email) {
+		for(User user : users) {
+			if(user.getEmail().equals(email)) {
+				return user.getBalance();
+			}
+		}
+		return 0;
+	}
 	public boolean verifyLogin(String email, String password) {
 		Hashtable<String, String> credentials = new Hashtable<>();
 		for(int i = 0; i < this.users.size(); i++) {

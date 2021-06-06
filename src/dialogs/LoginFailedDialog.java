@@ -9,14 +9,19 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import screens.Login;
+import tools.DisabledPanel;
 
 public class LoginFailedDialog extends JDialog implements ActionListener{
-	private Frame loginActivity;
+	private Login loginActivity;
 	private int dialogWidth, dialogHeight;
 	private JButton buttonOk;
+	private JPanel labelPanel, buttonPanel;
 	private JLabel loginFailedLabel;
 	
-	public LoginFailedDialog(Frame loginActivity, int dialogWidth, int dialogHeight) {
+	public LoginFailedDialog(Login loginActivity, int dialogWidth, int dialogHeight) {
 		super(loginActivity);
 		this.loginActivity = loginActivity;
 		this.dialogWidth = dialogWidth/3;
@@ -31,14 +36,28 @@ public class LoginFailedDialog extends JDialog implements ActionListener{
 	}
 	
 	public void addComponents() {
+		labelPanel = new JPanel();
+		addLabels(labelPanel);
+		
+		buttonPanel = new JPanel();
+		addButtons(buttonPanel);
+		
+		this.getContentPane().add(labelPanel);
+		this.getContentPane().add(buttonPanel);
+	}
+	
+	public void addLabels(JPanel labelPanel) {
 		loginFailedLabel = new JLabel("Error: Login Failed");
 		loginFailedLabel.setFont(new Font("Dialog", Font.BOLD, 12));
 		
+		labelPanel.add(loginFailedLabel);
+	}
+	
+	public void addButtons(JPanel buttonPanel) {
 		buttonOk = new JButton("Ok");
 		buttonOk.addActionListener(this);
 		
-		this.getContentPane().add(loginFailedLabel);
-		this.getContentPane().add(buttonOk);
+		buttonPanel.add(buttonOk);
 	}
 	
 	@Override
@@ -46,6 +65,9 @@ public class LoginFailedDialog extends JDialog implements ActionListener{
 		String command = e.getActionCommand();
 		switch(command) {
 			case "Ok":
+				this.loginActivity.setFocusableWindowState(true);
+				DisabledPanel.enable(this.loginActivity.getLoginPanel());
+				DisabledPanel.enable(this.loginActivity.getButtonPanel());
 				this.dispose();
 				break;
 		}

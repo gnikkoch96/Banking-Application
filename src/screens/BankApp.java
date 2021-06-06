@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -17,10 +19,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import backend.BankingApplication;
 import backend.CheckBalance;
 import backend.Deposit;
 import backend.PastTransactions;
 import backend.Withdraw;
+import models.Transaction;
 import tools.DisabledPanel;
 import tools.ImagePanel;
 
@@ -34,7 +38,9 @@ public class BankApp extends JFrame implements ActionListener{
 	private DisabledPanel dButtonPanel;
 	private JButton checkBalance, deposit, withdraw, pastTransactions, logout;
 	
-	public BankApp(String fullName, String id) {
+	public static double balance;
+	
+	public BankApp(String email, String fullName, String id) {
 		super("Nikko's Banking App (ID:" + id + ")"); 	
 		this.userID = id;
 		this.fullName = fullName;
@@ -42,7 +48,8 @@ public class BankApp extends JFrame implements ActionListener{
 		this.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT)); 	
 		this.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 30));	
 		this.setResizable(false);
-		this.setLocationRelativeTo(null);						
+		this.setLocationRelativeTo(null);	
+		balance = BankingApplication.bankDB.getBalance(email);
 		
 		// components
 		addComponents();
@@ -141,7 +148,8 @@ public class BankApp extends JFrame implements ActionListener{
 				Withdraw withdraw = new Withdraw(this, this.userID);
 				break;
 			case "Past Transactions":
-				PastTransactions pastTransactions = new PastTransactions(this, this.userID);
+				List<Transaction> transactions = BankingApplication.bankDB.getTransactionFromUser(Integer.parseInt(this.userID));
+				PastTransactions pastTransactions = new PastTransactions(this, this.userID, transactions);
 				break;
 			case "Logout":
 				this.dispose();

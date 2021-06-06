@@ -31,7 +31,8 @@ public class Login extends JFrame implements ActionListener{
 	private static final int FRAME_WIDTH = (int) (SCREEN_SIZE.getWidth()/3);
 	private static final int FRAME_HEIGHT = (int) (SCREEN_SIZE.getHeight()/2.5);
 	
-	private JPanel bannerPanel, loginPanel, buttonPanel;
+	private JPanel bannerPanel,loginPanel, buttonPanel;
+	private DisabledPanel dLoginPanel, dButtonPanel;
 	private JLabel usernameLabel, passwordLabel;
 	private JTextField usernameInput;
 	private JPasswordField passwordInput;
@@ -56,9 +57,12 @@ public class Login extends JFrame implements ActionListener{
 		loginPanel = new JPanel();
 		loginPanel.setLayout(new GridLayout(3, 1)); // layout is 4 x 1 (change the first value if you plan to add more components vertically
 		addLoginComponents(loginPanel);
+		dLoginPanel = new DisabledPanel(loginPanel);
+		
 		
 		buttonPanel = new JPanel();
 		addButtons(buttonPanel);
+		dButtonPanel = new DisabledPanel(buttonPanel);
 		
 		this.getContentPane().add(bannerPanel, BorderLayout.NORTH);
 		this.getContentPane().add(loginPanel, BorderLayout.CENTER);
@@ -124,17 +128,25 @@ public class Login extends JFrame implements ActionListener{
 			String email = usernameInput.getText();
 			String name = BankingApplication.bankDB.getName(email);
 			String id = String.valueOf(BankingApplication.bankDB.getID(email));
-			BankApp bankApp = new BankApp(name, id); // pass name (fname + lname) and id
+			BankApp bankApp = new BankApp(email, name, id); // pass name (fname + lname) and id
 			
 			bankApp.setFocusableWindowState(false); // makes the user not able to give focus to the bank app until they hit ok
 			DisabledPanel.disable(bankApp.getButtonPanel()); // prevents the user from doing anything until they hit the ok button from login
 			LoginSuccessfulDialog dialog = new LoginSuccessfulDialog(bankApp, FRAME_WIDTH, FRAME_HEIGHT);		
 		}else { // login failed
+			this.setFocusableWindowState(false);
+			DisabledPanel.disable(this.loginPanel);
+			DisabledPanel.disable(this.buttonPanel);;
 			LoginFailedDialog dialog = new LoginFailedDialog(this, FRAME_WIDTH, FRAME_HEIGHT);
-		}
-		
-		//load data (i.e. balance, past transactions, user's full name, and their id)
-
+		}		
+	}
+	
+	public JPanel getLoginPanel() {
+		return this.loginPanel;
+	}
+	
+	public JPanel getButtonPanel() {
+		return this.buttonPanel;
 	}
 	
 	@Override

@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import models.Transaction;
 import screens.BankApp;
 import tools.DisabledPanel;
 
@@ -30,12 +33,14 @@ public class PastTransactions extends JFrame implements ActionListener{
 	private JScrollPane scrollArea;
 	
 	private Dimension screenSize;
+	private List<Transaction> transactions;
 	
-	public PastTransactions(BankApp app, String id) { 
+	public PastTransactions(BankApp app, String id, List<Transaction> transactions) { 
 		super("Past Transactions (ID:" + id + ")");
 		this.userID = id;
 		this.balance = 0;
 		this.app = app;
+		this.transactions = transactions;
 		
 		// JFrame Related
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 			// Disposes only this frame 
@@ -84,6 +89,13 @@ public class PastTransactions extends JFrame implements ActionListener{
 		historyArea.setFont(new Font("Dialog", Font.PLAIN, 15));
 		historyArea.setLineWrap(true);
 		historyArea.setEditable(false);
+		
+		// add content
+		for(Transaction transaction : this.transactions) {
+			String format = transaction.getId() + "| " + transaction.getActivity() + "| $" + transaction.getAmount();
+			historyArea.append(format);
+		}
+		
 		
 		scrollArea = new JScrollPane(historyArea);
 		scrollArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

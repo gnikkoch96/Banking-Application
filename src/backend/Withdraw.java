@@ -30,7 +30,7 @@ public class Withdraw extends JFrame implements ActionListener{
 	public Withdraw(BankApp app, String id) { 
 		super("Withdraw from Account (ID:" + id + ")");
 		this.userID = id;
-		this.balance = 0; //Nikko: Dummy value for now...will read off from a txt file in the future
+		this.balance = BankApp.balance;
 		this.app = app;
 		
 		// JFrame Related

@@ -18,9 +18,9 @@ public class LoginSuccessfulDialog extends JDialog implements ActionListener{
 	private JButton btnOk;
 	private JLabel loginSuccessfulLabel;
 	private JPanel buttonPanel, labelPanel;
-	private Frame activity; // activity calling on the dialog
+	private BankApp activity; // activity calling on the dialog
 	
-	public LoginSuccessfulDialog(Frame activity, int dialogWidth, int dialogHeight) {
+	public LoginSuccessfulDialog(BankApp activity, int dialogWidth, int dialogHeight) {
 		super(activity);
 		this.activity = activity;
 		this.setSize(dialogWidth/3, dialogHeight/3);
@@ -64,7 +64,7 @@ public class LoginSuccessfulDialog extends JDialog implements ActionListener{
 		switch(command){
 			case "Ok":
 				this.activity.setFocusableWindowState(true);
-				DisabledPanel.enable(((BankApp) this.activity).getButtonPanel());
+				DisabledPanel.enable(this.activity.getButtonPanel());
 				this.dispose();
 				break;
 		}

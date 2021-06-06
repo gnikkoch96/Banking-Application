@@ -30,7 +30,7 @@ public class Deposit extends JFrame implements ActionListener{
 	public Deposit(BankApp app, String id) { 
 		super("Deposit to Account (ID:" + id + ")");
 		this.userID = id;
-		this.balance = 0; //Nikko: Dummy value for now...will read off from a txt file in the future
+		this.balance = BankApp.balance;
 		this.app = app;
 		
 		// JFrame Related

@@ -101,6 +101,7 @@ public class Datasource {
 				user.setlName(results.getString(INDEX_USER_LNAME));
 				user.setEmail(results.getString(INDEX_USER_EMAIL));
 				user.setPassword(results.getString(INDEX_USER_PASS));
+				user.setBalance(results.getDouble(INDEX_USER_BALANCE));
 				users.add(user);
 			}
 			return users;	
@@ -113,6 +114,8 @@ public class Datasource {
 	
 	public List<Transaction> queryTransactionDetails(int sortOrder, int userid){
 		StringBuilder sb = new StringBuilder(QUERY_TRANSACTION_DETAILS);
+		sb.append(String.valueOf(userid));
+		
 		if(sortOrder != ORDER_BY_NONE) {
 			sb.append(QUERY_TRANSACTION_DETAILS_SORT);
 			if(sortOrder == ORDER_BY_DESC) {
@@ -121,6 +124,8 @@ public class Datasource {
 				sb.append(" ASC");
 			}
 		}
+		
+		System.out.println(sb.toString());
 		try(Statement statement = conn.createStatement();
 				ResultSet results = statement.executeQuery(sb.toString())){
 			List<Transaction> transactions = new LinkedList<>();

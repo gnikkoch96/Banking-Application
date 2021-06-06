@@ -29,7 +29,7 @@ public class CheckBalance extends JFrame implements ActionListener {
 	public CheckBalance(BankApp app, String id) { 
 		super("Checking Balance (ID:" + id + ")");
 		this.userID = id;
-		this.balance = 0; //Nikko: Dummy value for now...will read off from a txt file in the future
+		this.balance = BankApp.balance; 
 		this.app = app;
 		
 		// JFrame Related
