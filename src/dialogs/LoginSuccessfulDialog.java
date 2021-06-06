@@ -11,9 +11,12 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class LoginSuccessfulDialog extends JDialog{
+import screens.BankApp;
+import tools.DisabledPanel;
+
+public class LoginSuccessfulDialog extends JDialog implements ActionListener{
 	private JButton btnOk;
-	private JLabel lLoginSuccessful;
+	private JLabel loginSuccessfulLabel;
 	private JPanel buttonPanel, labelPanel;
 	private Frame activity; // activity calling on the dialog
 	
@@ -42,21 +45,28 @@ public class LoginSuccessfulDialog extends JDialog{
 	
 	public void addButtons(JPanel buttonPanel) {
 		btnOk = new JButton("Ok");
-		btnOk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//Enable the DisabledPanel panels
-			}
-			
-		});
+		btnOk.addActionListener(this);
 		
 		buttonPanel.add(btnOk);
 	}
 	
 	public void addLabels(JPanel labelPanel) {
-		lLoginSuccessful = new JLabel("Login Successful!");
-		lLoginSuccessful.setFont(new Font("Dialog", Font.BOLD, 12));
+		loginSuccessfulLabel = new JLabel("Login Successful!");
+		loginSuccessfulLabel.setFont(new Font("Dialog", Font.BOLD, 12));
 		
-		labelPanel.add(lLoginSuccessful);
+		labelPanel.add(loginSuccessfulLabel);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		String command = e.getActionCommand();
+		switch(command){
+			case "Ok":
+				this.activity.setFocusableWindowState(true);
+				DisabledPanel.enable(((BankApp) this.activity).getButtonPanel());
+				this.dispose();
+				break;
+		}
 	}
 }

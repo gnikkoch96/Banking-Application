@@ -18,8 +18,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import backend.BankingApplication;
+import dialogs.LoginFailedDialog;
 import dialogs.LoginSuccessfulDialog;
 import parents.DefaultFrame;
+import tools.DisabledPanel;
 import tools.ImagePanel;
 import tools.JTextFieldLimit;
 
@@ -123,12 +125,16 @@ public class Login extends JFrame implements ActionListener{
 			String name = BankingApplication.bankDB.getName(email);
 			String id = String.valueOf(BankingApplication.bankDB.getID(email));
 			BankApp bankApp = new BankApp(name, id); // pass name (fname + lname) and id
-			LoginSuccessfulDialog dialog = new LoginSuccessfulDialog(this, FRAME_WIDTH, FRAME_HEIGHT);
+			
+			bankApp.setFocusableWindowState(false); // makes the user not able to give focus to the bank app until they hit ok
+			DisabledPanel.disable(bankApp.getButtonPanel()); // prevents the user from doing anything until they hit the ok button from login
+			LoginSuccessfulDialog dialog = new LoginSuccessfulDialog(bankApp, FRAME_WIDTH, FRAME_HEIGHT);		
 		}else { // login failed
-				
+			LoginFailedDialog dialog = new LoginFailedDialog(this, FRAME_WIDTH, FRAME_HEIGHT);
 		}
 		
 		//load data (i.e. balance, past transactions, user's full name, and their id)
+
 	}
 	
 	@Override

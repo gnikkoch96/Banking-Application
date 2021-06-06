@@ -1,25 +1,29 @@
 package dialogs;
 
 import java.awt.Font;
+import java.awt.Frame;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
-public class LoginFailedDialog extends JDialog{
-	private JButton btnOk;
-	private JLabel lLoginFail;
-	private JPanel buttonPanel, labelPanel;
+public class LoginFailedDialog extends JDialog implements ActionListener{
+	private Frame loginActivity;
+	private int dialogWidth, dialogHeight;
+	private JButton buttonOk;
+	private JLabel loginFailedLabel;
 	
-	private dialogWidth, dialogHeight;
-	
-	public LoginFailedDialog(int dialogWidth, int dialogHeight) {
-		this.setSize(dialogWidth, dialogHeight);
-		this.setTitle("Balance Update Confirmation");
+	public LoginFailedDialog(Frame loginActivity, int dialogWidth, int dialogHeight) {
+		super(loginActivity);
+		this.loginActivity = loginActivity;
+		this.dialogWidth = dialogWidth/3;
+		this.dialogHeight = dialogHeight/3;
+		this.setSize(this.dialogWidth, this.dialogHeight);
 		this.setLocationRelativeTo(null);
+		this.setLayout(new GridLayout(2,1));
 		
 		addComponents();
 		
@@ -27,34 +31,24 @@ public class LoginFailedDialog extends JDialog{
 	}
 	
 	public void addComponents() {
-		labelPanel = new JPanel();
-		addLabels(labelPanel);
+		loginFailedLabel = new JLabel("Error: Login Failed");
+		loginFailedLabel.setFont(new Font("Dialog", Font.BOLD, 12));
 		
-		buttonPanel = new JPanel();
-		addButtons(buttonPanel);
+		buttonOk = new JButton("Ok");
+		buttonOk.addActionListener(this);
 		
-		this.getContentPane().add(labelPanel);
-		this.getContentPane().add(buttonPanel);
+		this.getContentPane().add(loginFailedLabel);
+		this.getContentPane().add(buttonOk);
 	}
 	
-	public void addButtons(JPanel buttonPanel) {
-		btnOk = new JButton("Ok");
-		btnOk.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//Enable the Login panels
-//				this.dispose(); here, this refers to the ActionListener and not the JDialog
-			}
-			
-		});
-		
-		buttonPanel.add(btnOk);
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String command = e.getActionCommand();
+		switch(command) {
+			case "Ok":
+				this.dispose();
+				break;
+		}
 	}
 	
-	public void addLabels(JPanel labelPanel) {
-		lLoginFail = new JLabel("Error: Login Failed");
-		lLoginFail.setFont(new Font("Dialog", Font.BOLD, 12));
-		
-		labelPanel.add(lLoginFail);
-	}
 }
