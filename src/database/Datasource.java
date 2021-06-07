@@ -63,6 +63,12 @@ public class Datasource {
 	
 	public static final String QUERY_TRANSACTION_DETAILS_SORT = 
 			" ORDER BY " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_ID; 
+	
+	public static final String INSERT_INTO_TRANSACTION = 
+			"INSERT INTO " + TABLE_TRANSACTIONS + " (" + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_USER + ", " 
+			+ TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_ACTIVITY + ", " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_AMOUNT 
+			+ " VALUES(";
+	
 
 	
 	// Database Connections

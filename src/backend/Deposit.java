@@ -17,6 +17,8 @@ import screens.BankApp;
 import tools.DisabledPanel;
 
 public class Deposit extends JFrame implements ActionListener{
+	private static final String ACTIVITY = "Deposit";
+	
 	private String userID;
 	private int frameWidth, frameHeight;
 	private double balance;

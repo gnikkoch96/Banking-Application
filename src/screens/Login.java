@@ -127,9 +127,8 @@ public class Login extends JFrame implements ActionListener{
 			this.dispose();
 			String email = usernameInput.getText();
 			String name = BankingApplication.bankDB.getName(email);
-			String id = String.valueOf(BankingApplication.bankDB.getID(email));
+			String id = String.format("%06d", BankingApplication.bankDB.getID(email));
 			BankApp bankApp = new BankApp(email, name, id); // pass name (fname + lname) and id
-			
 			bankApp.setFocusableWindowState(false); // makes the user not able to give focus to the bank app until they hit ok
 			DisabledPanel.disable(bankApp.getButtonPanel()); // prevents the user from doing anything until they hit the ok button from login
 			LoginSuccessfulDialog dialog = new LoginSuccessfulDialog(bankApp, FRAME_WIDTH, FRAME_HEIGHT);		

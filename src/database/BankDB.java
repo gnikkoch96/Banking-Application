@@ -36,6 +36,10 @@ public class BankDB {
 		return transactions;
 	}
 	
+	public void addBankActivity(int id, String activity, double amount) { // updates the bank based on whether user deposits or withdraws from the bank
+		
+	}
+	
 	public String getName(String email) {
 		for(User user : users) {
 			if(user.getEmail().equals(email)) {

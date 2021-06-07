@@ -17,6 +17,8 @@ import screens.BankApp;
 import tools.DisabledPanel;
 
 public class Withdraw extends JFrame implements ActionListener{
+	private static final String ACTIVITY = "Withdraw";
+	
 	private String userID;
 	private int frameWidth, frameHeight;
 	private double balance;
