@@ -108,9 +108,20 @@ public class Withdraw extends JFrame implements ActionListener{
 		depositVerification.setVisible(true);
 	}
 	
-	public static void reduceBalance(double amount) {
-		
+
+	public int getID() {
+		int id = Integer.parseInt(userID);
+		return id;
 	}
+	
+	public JTextField getDepositInput() {
+		return this.withdrawInput;
+	}
+
+	public void updateBalance(double newBalance) {
+		balanceField.setText("Balance: $" + String.valueOf(newBalance));
+	}
+	
    
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -119,6 +130,7 @@ public class Withdraw extends JFrame implements ActionListener{
 			case "Back":
 				this.app.setFocusableWindowState(true);
 				DisabledPanel.enable(this.app.getButtonPanel());
+				BankApp.balance = Double.parseDouble(balanceField.getText().substring(10));
 				this.dispose();
 				break;
 			case "Exit": // exits from the whole program (doesn't need to save anything since it is only checking)

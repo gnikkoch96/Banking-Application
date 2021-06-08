@@ -24,7 +24,6 @@ public class BankDB {
 	}
 	
 	public List<Transaction> getTransactionFromUser(int id){ // gets the transaction for a specific id
-		datasource = new Datasource();
 		if(!datasource.open()) {
 			System.out.println("Can't open datasource");
 			return null;
@@ -37,7 +36,25 @@ public class BankDB {
 	}
 	
 	public void addBankActivity(int id, String activity, double amount) { // updates the bank based on whether user deposits or withdraws from the bank
+		if(!datasource.open()) {
+			System.out.println("Can't open datasource");
+			return;
+		}
 		
+		datasource.insertTransaction(id, activity, amount);
+		
+		datasource.close();
+
+	}
+	
+	public void addUser(String fname, String lname, String password, String email) {
+		if(!datasource.open()){
+			System.out.println("Can't open datasource");
+			return;
+		}
+		
+		datasource.insertUser(fname, lname, password, email);
+		datasource.close();
 	}
 	
 	public String getName(String email) {
@@ -58,6 +75,7 @@ public class BankDB {
 		return 0;
 	}
 	
+	
 	public double getBalance(String email) {
 		for(User user : users) {
 			if(user.getEmail().equals(email)) {
@@ -66,6 +84,26 @@ public class BankDB {
 		}
 		return 0;
 	}
+	
+	public double getBalance(int id) {
+		for(User user : users) {
+			if(user.getId() == id) {
+				return user.getBalance();
+			}
+		}
+		return 0;
+	}
+	
+	public void updateBalance(int id, double amount) {
+		if(!datasource.open()) {
+			System.out.println("Could not open database");
+			return;
+		}
+		
+		datasource.updateBalance(id, amount);
+		datasource.close();
+	}
+	
 	public boolean verifyLogin(String email, String password) {
 		Hashtable<String, String> credentials = new Hashtable<>();
 		for(int i = 0; i < this.users.size(); i++) {

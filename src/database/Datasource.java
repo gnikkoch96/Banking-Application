@@ -65,11 +65,16 @@ public class Datasource {
 			" ORDER BY " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_ID; 
 	
 	public static final String INSERT_INTO_TRANSACTION = 
-			"INSERT INTO " + TABLE_TRANSACTIONS + " (" + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_USER + ", " 
-			+ TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_ACTIVITY + ", " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_AMOUNT 
-			+ " VALUES(";
+			"INSERT INTO " + TABLE_TRANSACTIONS + " (" + COLUMN_TRANSACTION_USER + ", " + COLUMN_TRANSACTION_ACTIVITY
+			+ ", " + COLUMN_TRANSACTION_AMOUNT 
+			+ ") VALUES(";
 	
-
+	public static final String UPDATE_USER_BALANCE = 
+			"UPDATE " + TABLE_USERS + " SET " + COLUMN_USER_BALANCE + "=";
+	
+	public static final String INSERT_INTO_USER =
+			"INSERT INTO " + TABLE_USERS + " (" + COLUMN_USER_FNAME + ", " + COLUMN_USER_LNAME + ", " + COLUMN_USER_PASS
+			+ ", " + COLUMN_USER_EMAIL + ") VALUES(";
 	
 	// Database Connections
 	private Connection conn;
@@ -148,6 +153,50 @@ public class Datasource {
 			System.out.println("Query Failed: " + e.getMessage());
 			return null;
 		}
+	}
+	
+	public void insertTransaction(int id, String activity, double amount) {
+		StringBuilder sb = new StringBuilder(INSERT_INTO_TRANSACTION); // don't need to insert id as it auto increment
+		System.out.println(sb.toString());
+		try(Statement statement = conn.createStatement()){
+			sb.append(id + ",");
+			sb.append("\'" + activity + "\',");
+			sb.append(amount);
+			sb.append(")");
+			statement.executeUpdate(sb.toString());
+		}catch(SQLException e) {
+			System.out.println("Transaction Insert Failed: " + e.getMessage());
+		}
+	}
+	
+	public void insertUser(String fname, String lname, String password, String email) {
+		StringBuilder sb = new StringBuilder(INSERT_INTO_USER);
+		try(Statement statement = conn.createStatement()){
+			sb.append("\'" + fname + "\',");
+			sb.append("\'" + lname + "\',");
+			sb.append("\'" + password + "\',");
+			sb.append("\'" + email + ")");
+			
+			System.out.println(sb.toString());
+			statement.executeUpdate(sb.toString());
+		}catch(SQLException e){
+			System.out.println("Failed to insert user: " + e.getMessage());
+		}
+	}
+	
+	public void updateBalance(int id, double amount) { // amount should already be calculated
+		StringBuilder sb = new StringBuilder(UPDATE_USER_BALANCE);
+		try(Statement statement = conn.createStatement()){
+			sb.append(amount);
+			sb.append(" WHERE " + COLUMN_USER_ID + "=");
+			sb.append(id);
+			
+			System.out.println(sb.toString());
+			statement.executeUpdate(sb.toString());
+		}catch(SQLException e) {
+			System.out.println("Update Balance Failed: " + e.getMessage());
+		}
+		
 	}
 	
 }

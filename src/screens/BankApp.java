@@ -29,6 +29,7 @@ import tools.DisabledPanel;
 import tools.ImagePanel;
 
 public class BankApp extends JFrame implements ActionListener{
+	
 	private static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
 	private static final int FRAME_WIDTH = (int) (SCREEN_SIZE.getWidth()/4);	 //Nikko: possible loss in precision
 	private static final int FRAME_HEIGHT = (int) (SCREEN_SIZE.getHeight()/1.5); //Nikko: possible loss in precision
@@ -39,10 +40,11 @@ public class BankApp extends JFrame implements ActionListener{
 	private JButton checkBalance, deposit, withdraw, pastTransactions, logout;
 	
 	public static double balance;
-	
-	public BankApp(String email, String fullName, String id) {
+	public static int id;
+
+	public BankApp(String email, String fullName, String userID) {
 		super("Nikko's Banking App (ID:" + id + ")"); 	
-		this.userID = id;
+		this.userID = userID;
 		this.fullName = fullName;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		this.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT)); 	
@@ -50,6 +52,7 @@ public class BankApp extends JFrame implements ActionListener{
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);	
 		balance = BankingApplication.bankDB.getBalance(email);
+		id = Integer.parseInt(userID);
 		
 		// components
 		addComponents();
@@ -130,8 +133,7 @@ public class BankApp extends JFrame implements ActionListener{
 
 	
 	public JPanel getButtonPanel() {return this.buttonPanel;}
-	
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();

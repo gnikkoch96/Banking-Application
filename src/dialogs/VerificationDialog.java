@@ -12,8 +12,10 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import backend.BankingApplication;
 import backend.Deposit;
 import backend.Withdraw;
+import screens.BankApp;
 
 public class VerificationDialog extends JDialog implements ActionListener{
 	private double changedBalanceAmount;
@@ -24,10 +26,10 @@ public class VerificationDialog extends JDialog implements ActionListener{
 	private Frame activity;
 	
 
-	public VerificationDialog(Frame activity, int dialogWidth, int dialogHeight, double changedAmount) {
+	public VerificationDialog(Frame activity, int dialogWidth, int dialogHeight, double amount) {
 		super(activity);
 		this.activity = activity;
-		this.changedBalanceAmount = changedAmount;
+		this.changedBalanceAmount = amount;
 		this.dialogWidth = dialogWidth/2;
 		this.dialogHeight = dialogHeight/2;
 		this.setSize(this.dialogWidth, this.dialogHeight);
@@ -71,12 +73,23 @@ public class VerificationDialog extends JDialog implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
+		
 		switch(command) {
 			case "Yes":
+				int userID = BankApp.id;
+				double changedBalance = BankApp.balance;
 				if(activity instanceof Deposit) {//Nikko: Probably not as scaleable
-					Deposit.addBalance(this.changedBalanceAmount);
+					changedBalance += this.changedBalanceAmount;
+					BankingApplication.bankDB.updateBalance(userID, changedBalance); // updates balance in database
+					BankingApplication.bankDB.addBankActivity(userID, "Deposit", 0); // records activity in database
+					((Deposit)activity).getDepositInput().setText("0.00");
+					((Deposit)activity).updateBalance(changedBalance); // updates deposit's balance text field
 				}else {
-					Withdraw.reduceBalance(this.changedBalanceAmount);
+					changedBalance -= this.changedBalanceAmount;
+					BankingApplication.bankDB.updateBalance(userID, changedBalance); // updates balance in database
+					BankingApplication.bankDB.addBankActivity(userID, "Withdraw", this.changedBalanceAmount);
+					((Withdraw)activity).getDepositInput().setText("0.00");
+					((Withdraw)activity).updateBalance(changedBalance); // updates deposit's balance text field
 				}
 				this.dispose();
 				BalanceUpdateDialog updateDialog = new BalanceUpdateDialog(this.dialogWidth, this.dialogHeight);

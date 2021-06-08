@@ -103,10 +103,19 @@ public class Deposit extends JFrame implements ActionListener{
 		depositPanel.add(submitButton);
 	}
    
-	public static void addBalance(double amount) {
-		
+	public int getID() {
+		int id = Integer.parseInt(userID);
+		return id;
 	}
-   
+	
+	public JTextField getDepositInput() {
+		return this.depositInput;
+	}
+
+	public void updateBalance(double newBalance) {
+		balanceField.setText("Balance: $" + String.valueOf(newBalance));
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
@@ -114,13 +123,14 @@ public class Deposit extends JFrame implements ActionListener{
 			case "Back":
 				this.app.setFocusableWindowState(true);
 				DisabledPanel.enable(this.app.getButtonPanel());
+				BankApp.balance = Double.parseDouble(balanceField.getText().substring(10));
 				this.dispose();
 				break;
 			case "Exit": // exits from the whole program (doesn't need to save anything since it is only checking)
 				System.exit(0);
 				break;
 			case "Submit":
-				VerificationDialog depositVerification = new VerificationDialog(this, this.frameWidth, this.frameHeight, Double.parseDouble(depositInput.getText()));
+				VerificationDialog depositVerification = new VerificationDialog(this, this.frameWidth, this.frameHeight, Double.parseDouble(depositInput.getText()));				
 				break;
 		}
 	}

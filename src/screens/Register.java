@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import backend.BankingApplication;
 import tools.ImagePanel;
 import tools.JTextFieldLimit;
 
@@ -139,6 +140,21 @@ public class Register extends JFrame implements ActionListener {
 			
 		}
 		
+		public void register() {
+			String pass = String.valueOf(passwordInput.getPassword());
+			String verifyPass = String.valueOf(verifyPasswordInput.getPassword());
+			
+			if(pass.equals(verifyPass)) {
+				String fname = firstNameInput.getText();
+				String lname = lastNameInput.getText();
+				String email = emailInput.getText();
+				
+				BankingApplication.bankDB.addUser(fname, lname, pass, email);
+			}else { // display register failed dialog
+				
+			}
+		}
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
@@ -151,7 +167,7 @@ public class Register extends JFrame implements ActionListener {
 					System.exit(0);
 					break;
 				case "Register":
-					
+					register();
 					break;
 			}
 		}
