@@ -93,7 +93,7 @@ public class PastTransactions extends JFrame implements ActionListener{
 		// add content
 		for(Transaction transaction : this.transactions) {
 //			String format = transaction.getId() + "| " + transaction.getActivity() + "| $" + transaction.getAmount();
-			String format = String.format("%-10s| %-50s| $%8.2f", transaction.getId(), transaction.getActivity(), transaction.getAmount());
+			String format = String.format("Date: %-10s\n %-50s| $%8.2f\n", transaction.getDate(), transaction.getActivity(), transaction.getAmount());
 			historyArea.append(format + "\n");
 		}
 		

@@ -3,6 +3,7 @@ package models;
 public class Transaction {
 	private int id; // primary key
 	private int user; // foreign key
+	private String date;
 	private String activity;
 	private double amount;
 	
@@ -29,5 +30,11 @@ public class Transaction {
 	}
 	public void setUser(int user) {
 		this.user = user;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
 	}
 }

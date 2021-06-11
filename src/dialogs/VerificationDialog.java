@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -70,28 +72,39 @@ public class VerificationDialog extends JDialog implements ActionListener{
 		buttonPanel.add(noButton);
 	}
 
+	public void yes() {
+		int userID = BankApp.id;
+		double changedBalance = BankApp.balance;
+		String dateTime = getCurrentDate();
+		if(activity instanceof Deposit) {//Nikko: Probably not as scaleable
+			changedBalance += this.changedBalanceAmount;
+			BankingApplication.bankDB.updateBalance(userID, changedBalance); // updates balance in database
+			BankingApplication.bankDB.addBankActivity(userID, dateTime, "Deposit", this.changedBalanceAmount); // records activity in database
+			((Deposit)activity).getDepositInput().setText("0.00");
+			((Deposit)activity).updateBalance(changedBalance); // updates deposit's balance text field
+		}else {
+			changedBalance -= this.changedBalanceAmount;
+			BankingApplication.bankDB.updateBalance(userID, changedBalance); // updates balance in database
+			BankingApplication.bankDB.addBankActivity(userID, dateTime, "Withdraw", this.changedBalanceAmount);
+			((Withdraw)activity).getDepositInput().setText("0.00");
+			((Withdraw)activity).updateBalance(changedBalance); // updates deposit's balance text field
+		}
+		BankingApplication.bankDB.updateDB();
+	}
+	
+	public String getCurrentDate() {// grabs current date and time
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		Date date = new Date();
+		return formatter.format(date);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		
 		switch(command) {
 			case "Yes":
-				int userID = BankApp.id;
-				double changedBalance = BankApp.balance;
-				if(activity instanceof Deposit) {//Nikko: Probably not as scaleable
-					changedBalance += this.changedBalanceAmount;
-					BankingApplication.bankDB.updateBalance(userID, changedBalance); // updates balance in database
-					BankingApplication.bankDB.addBankActivity(userID, "Deposit", this.changedBalanceAmount); // records activity in database
-					((Deposit)activity).getDepositInput().setText("0.00");
-					((Deposit)activity).updateBalance(changedBalance); // updates deposit's balance text field
-				}else {
-					changedBalance -= this.changedBalanceAmount;
-					BankingApplication.bankDB.updateBalance(userID, changedBalance); // updates balance in database
-					BankingApplication.bankDB.addBankActivity(userID, "Withdraw", this.changedBalanceAmount);
-					((Withdraw)activity).getDepositInput().setText("0.00");
-					((Withdraw)activity).updateBalance(changedBalance); // updates deposit's balance text field
-				}
-				BankingApplication.bankDB.updateDB();
+				yes();
 				this.dispose();
 				BalanceUpdateDialog updateDialog = new BalanceUpdateDialog(this.dialogWidth, this.dialogHeight, "Balance Updated");
 				break;

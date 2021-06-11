@@ -36,15 +36,18 @@ public class Datasource {
 	// Table Transactions
 	public static final String TABLE_TRANSACTIONS = "transactions";
 	public static final String COLUMN_TRANSACTION_ID = "id";
+	public static final String COLUMN_TRANSACTION_DATE = "date";
 	public static final String COLUMN_TRANSACTION_ACTIVITY = "activity";
 	public static final String COLUMN_TRANSACTION_AMOUNT = "amount";
 	public static final String COLUMN_TRANSACTION_USER = "user";
 	
 	// (Transactions) Index Values
 	public static final int INDEX_TRANSACTION_ID = 1;
-	public static final int INDEX_TRANSACTION_ACTIVITY = 2;
-	public static final int INDEX_TRANSACTION_AMOUNT = 3;
-	public static final int INDEX_TRANSACTION_USER = 4;
+	public static final int INDEX_TRANSACTION_USER = 2;
+	public static final int INDEX_TRANSACTION_DATE = 3;
+	public static final int INDEX_TRANSACTION_ACTIVITY = 4;
+	public static final int INDEX_TRANSACTION_AMOUNT = 5;
+
 	
 	
 	// ORDER BY
@@ -57,7 +60,8 @@ public class Datasource {
 			"SELECT * FROM " + TABLE_USERS;
 	
 	public static final String QUERY_TRANSACTION_DETAILS = 
-			"SELECT " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_ID + ", " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_ACTIVITY
+			"SELECT " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_ID + ", " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_DATE
+				+ ", " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_ACTIVITY
 				+ ", " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_AMOUNT + " FROM "+ TABLE_TRANSACTIONS 
 				+ " WHERE " + TABLE_TRANSACTIONS + "." + COLUMN_TRANSACTION_USER + " =";
 	
@@ -66,7 +70,7 @@ public class Datasource {
 	
 	public static final String INSERT_INTO_TRANSACTION = 
 			"INSERT INTO " + TABLE_TRANSACTIONS + " (" + COLUMN_TRANSACTION_USER + ", " + COLUMN_TRANSACTION_ACTIVITY
-			+ ", " + COLUMN_TRANSACTION_AMOUNT 
+			+ ", " + COLUMN_TRANSACTION_AMOUNT  + ", " + COLUMN_TRANSACTION_DATE
 			+ ") VALUES(";
 	
 	public static final String UPDATE_USER_BALANCE = 
@@ -143,6 +147,7 @@ public class Datasource {
 			while(results.next()) {
 				Transaction transaction = new Transaction();
 				transaction.setId(results.getInt(COLUMN_TRANSACTION_ID));
+				transaction.setDate(results.getString(COLUMN_TRANSACTION_DATE));
 				transaction.setActivity(results.getString(COLUMN_TRANSACTION_ACTIVITY));
 				transaction.setAmount(results.getDouble(COLUMN_TRANSACTION_AMOUNT));
 				transactions.add(transaction);
@@ -155,13 +160,14 @@ public class Datasource {
 		}
 	}
 	
-	public void insertTransaction(int id, String activity, double amount) {
+	public void insertTransaction(int id, String date, String activity, double amount) {
 		StringBuilder sb = new StringBuilder(INSERT_INTO_TRANSACTION); // don't need to insert id as it auto increment
 		System.out.println(sb.toString());
 		try(Statement statement = conn.createStatement()){
 			sb.append(id + ",");
 			sb.append("\'" + activity + "\',");
-			sb.append(amount);
+			sb.append(amount + ",");
+			sb.append("\'" + date + "\'");
 			sb.append(")");
 			System.out.println(sb.toString());
 			statement.executeUpdate(sb.toString());

@@ -1,2 +1,6 @@
 /tools/
 /backend/
+/BankApp.db-journal
+/models/
+/database/
+/dialogs/

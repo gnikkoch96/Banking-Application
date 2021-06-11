@@ -39,13 +39,13 @@ public class BankDB {
 		return transactions;
 	}
 	
-	public void addBankActivity(int id, String activity, double amount) { // updates the bank based on whether user deposits or withdraws from the bank
+	public void addBankActivity(int id, String date, String activity, double amount) { // updates the bank based on whether user deposits or withdraws from the bank
 		if(!datasource.open()) {
 			System.out.println("Can't open datasource");
 			return;
 		}
 		
-		datasource.insertTransaction(id, activity, amount);
+		datasource.insertTransaction(id, date, activity, amount);
 		
 		datasource.close();
 
