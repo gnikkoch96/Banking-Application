@@ -12,9 +12,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import dialogs.BalanceUpdateDialog;
 import dialogs.VerificationDialog;
 import screens.BankApp;
 import tools.DisabledPanel;
+import tools.InputValidation;
 
 public class Deposit extends JFrame implements ActionListener{
 	private static final String ACTIVITY = "Deposit";
@@ -116,6 +118,17 @@ public class Deposit extends JFrame implements ActionListener{
 		balanceField.setText("Balance: $" + String.valueOf(newBalance));
 	}
 	
+	public void submit() {
+		// validate fields
+		if(InputValidation.validateNumbers(depositInput.getText())) {
+			VerificationDialog depositVerification = new VerificationDialog(this, this.frameWidth, this.frameHeight, Double.parseDouble(depositInput.getText()));
+			depositVerification.setVisible(true);
+		}else {
+			BalanceUpdateDialog failed = new BalanceUpdateDialog(frameWidth/2, frameHeight/2, InputValidation.MESSAGE);
+		}
+
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
@@ -130,7 +143,7 @@ public class Deposit extends JFrame implements ActionListener{
 				System.exit(0);
 				break;
 			case "Submit":
-				VerificationDialog depositVerification = new VerificationDialog(this, this.frameWidth, this.frameHeight, Double.parseDouble(depositInput.getText()));				
+				submit();
 				break;
 		}
 	}

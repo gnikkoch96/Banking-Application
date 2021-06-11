@@ -34,7 +34,7 @@ public class VerificationDialog extends JDialog implements ActionListener{
 		this.dialogHeight = dialogHeight/2;
 		this.setSize(this.dialogWidth, this.dialogHeight);
 		this.setTitle(activity.getName());
-		this.setLocationRelativeTo(null);
+		this.setLocationRelativeTo(activity);
 		
 		addComponents();
 		
@@ -81,7 +81,7 @@ public class VerificationDialog extends JDialog implements ActionListener{
 				if(activity instanceof Deposit) {//Nikko: Probably not as scaleable
 					changedBalance += this.changedBalanceAmount;
 					BankingApplication.bankDB.updateBalance(userID, changedBalance); // updates balance in database
-					BankingApplication.bankDB.addBankActivity(userID, "Deposit", 0); // records activity in database
+					BankingApplication.bankDB.addBankActivity(userID, "Deposit", this.changedBalanceAmount); // records activity in database
 					((Deposit)activity).getDepositInput().setText("0.00");
 					((Deposit)activity).updateBalance(changedBalance); // updates deposit's balance text field
 				}else {
@@ -91,8 +91,9 @@ public class VerificationDialog extends JDialog implements ActionListener{
 					((Withdraw)activity).getDepositInput().setText("0.00");
 					((Withdraw)activity).updateBalance(changedBalance); // updates deposit's balance text field
 				}
+				BankingApplication.bankDB.updateDB();
 				this.dispose();
-				BalanceUpdateDialog updateDialog = new BalanceUpdateDialog(this.dialogWidth, this.dialogHeight);
+				BalanceUpdateDialog updateDialog = new BalanceUpdateDialog(this.dialogWidth, this.dialogHeight, "Balance Updated");
 				break;
 			case "No":
 				this.dispose();

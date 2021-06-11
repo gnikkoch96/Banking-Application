@@ -12,9 +12,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import dialogs.BalanceUpdateDialog;
 import dialogs.VerificationDialog;
 import screens.BankApp;
 import tools.DisabledPanel;
+import tools.InputValidation;
 
 public class Withdraw extends JFrame implements ActionListener{
 	private static final String ACTIVITY = "Withdraw";
@@ -104,8 +106,18 @@ public class Withdraw extends JFrame implements ActionListener{
 	}
    
 	public void submit() {
-		VerificationDialog depositVerification = new VerificationDialog(this, this.frameWidth, this.frameHeight, Double.parseDouble(withdrawInput.getText()));
-		depositVerification.setVisible(true);
+		// validate fields
+		
+		System.out.println(InputValidation.validateWithdraw(BankApp.balance, Double.parseDouble(withdrawInput.getText())));
+		
+		if(InputValidation.validateNumbers(withdrawInput.getText()) && InputValidation.validateWithdraw(BankApp.balance, Double.parseDouble(withdrawInput.getText()))) {
+			VerificationDialog withdrawVerification = new VerificationDialog(this, this.frameWidth, this.frameHeight, Double.parseDouble(withdrawInput.getText()));
+			withdrawVerification.setVisible(true);
+		}else {
+			System.out.println(InputValidation.MESSAGE);
+			BalanceUpdateDialog failed = new BalanceUpdateDialog(frameWidth/2, frameHeight/2, InputValidation.MESSAGE);
+		}
+
 	}
 	
 

@@ -17,7 +17,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import backend.BankingApplication;
+import dialogs.RegisterDialog;
+import tools.DisabledPanel;
 import tools.ImagePanel;
+import tools.InputValidation;
 import tools.JTextFieldLimit;
 
 public class Register extends JFrame implements ActionListener {
@@ -27,6 +30,7 @@ public class Register extends JFrame implements ActionListener {
 		private static final int FRAME_HEIGHT = (int) (SCREEN_SIZE.getHeight()/2);
 		
 		private JPanel bannerPanel, userPanel, buttonPanel;
+		private DisabledPanel dUserPanel, dButtonPanel;
 		private JLabel firstNameLabel, lastNameLabel, passwordLabel, verifyPasswordLabel, emailLabel;
 		private JTextField firstNameInput, lastNameInput, emailInput;
 		private JPasswordField passwordInput, verifyPasswordInput;
@@ -52,9 +56,11 @@ public class Register extends JFrame implements ActionListener {
 			userPanel = new JPanel();
 			userPanel.setLayout(new GridLayout(6, 1));
 			addUserComponents(userPanel);
+			dUserPanel = new DisabledPanel(userPanel);
 			
 			buttonPanel = new JPanel();
 			addButtons(buttonPanel);
+			dButtonPanel = new DisabledPanel(buttonPanel);
 			
 			this.getContentPane().add(bannerPanel, BorderLayout.NORTH);
 			this.getContentPane().add(userPanel, BorderLayout.CENTER);
@@ -141,19 +147,25 @@ public class Register extends JFrame implements ActionListener {
 		}
 		
 		public void register() {
+			String fname = firstNameInput.getText();
+			String lname = lastNameInput.getText();
+			String email = emailInput.getText();
 			String pass = String.valueOf(passwordInput.getPassword());
 			String verifyPass = String.valueOf(verifyPasswordInput.getPassword());
-			
-			if(pass.equals(verifyPass)) {
-				String fname = firstNameInput.getText();
-				String lname = lastNameInput.getText();
-				String email = emailInput.getText();
-				
+			if(InputValidation.validateRegister(fname, lname, pass, verifyPass, email)) { // validate inputs
 				BankingApplication.bankDB.addUser(fname, lname, pass, email);
-			}else { // display register failed dialog
-				
+				BankingApplication.bankDB.updateDB();
+				this.dispose();
+				System.out.println(BankingApplication.bankDB.getID(email));
+				BankApp bankApp = new BankApp(email, fname + " " + lname, String.valueOf(BankingApplication.bankDB.getID(email)));
+				RegisterDialog success = new RegisterDialog(this, FRAME_WIDTH, FRAME_HEIGHT, InputValidation.MESSAGE);
+			}else {
+				RegisterDialog failed = new RegisterDialog(this, FRAME_WIDTH, FRAME_HEIGHT, InputValidation.MESSAGE);
 			}
 		}
+		
+		public JPanel getUserPanel(){return this.userPanel;}
+		public JPanel getButtonPanel() {return this.buttonPanel;}
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -167,6 +179,9 @@ public class Register extends JFrame implements ActionListener {
 					System.exit(0);
 					break;
 				case "Register":
+					this.setFocusableWindowState(false);
+					DisabledPanel.disable(this.userPanel);
+					DisabledPanel.disable(this.buttonPanel);
 					register();
 					break;
 			}

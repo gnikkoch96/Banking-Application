@@ -24,7 +24,7 @@ public class LoginSuccessfulDialog extends JDialog implements ActionListener{
 		super(activity);
 		this.activity = activity;
 		this.setSize(dialogWidth/3, dialogHeight/3);
-		this.setLocationRelativeTo(null);
+		this.setLocationRelativeTo(activity);
 		this.setLayout(new GridLayout(2,1));
 		
 		addComponents();

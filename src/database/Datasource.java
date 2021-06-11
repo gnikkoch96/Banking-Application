@@ -163,6 +163,7 @@ public class Datasource {
 			sb.append("\'" + activity + "\',");
 			sb.append(amount);
 			sb.append(")");
+			System.out.println(sb.toString());
 			statement.executeUpdate(sb.toString());
 		}catch(SQLException e) {
 			System.out.println("Transaction Insert Failed: " + e.getMessage());
@@ -175,7 +176,7 @@ public class Datasource {
 			sb.append("\'" + fname + "\',");
 			sb.append("\'" + lname + "\',");
 			sb.append("\'" + password + "\',");
-			sb.append("\'" + email + ")");
+			sb.append("\'" + email + "\')");
 			
 			System.out.println(sb.toString());
 			statement.executeUpdate(sb.toString());

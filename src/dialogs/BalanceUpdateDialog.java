@@ -18,11 +18,12 @@ public class BalanceUpdateDialog extends JDialog implements ActionListener{
 	private JButton confirmButton;
 	private JTextField text;
 	private JPanel textPanel, buttonPanel;
-	private Frame activity;
+	private String message;
 
-	public BalanceUpdateDialog(int dialogWidth, int dialogHeight) {
+	public BalanceUpdateDialog(int dialogWidth, int dialogHeight, String message) {
 		this.setSize(dialogWidth, dialogHeight);
 		this.setTitle("Balance Update Confirmation");
+		this.message = message;
 		this.setLocationRelativeTo(null);
 		
 		addComponents();
@@ -42,8 +43,8 @@ public class BalanceUpdateDialog extends JDialog implements ActionListener{
 	}
 	
 	public void addTextComponents(JPanel warningPanel) {
-		text = new JTextField("Balance Updated");
-		text.setFont(new Font("Dialog", Font.BOLD, 15));
+		text = new JTextField(this.message);
+		text.setFont(new Font("Dialog", Font.PLAIN, 12));
 		text.setEditable(false);
 		
 		warningPanel.add(text);

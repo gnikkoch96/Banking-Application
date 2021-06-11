@@ -13,6 +13,10 @@ public class BankDB {
 	private List<Transaction> transactions;
 	
 	public BankDB() {
+		updateDB();
+	}
+	
+	public void updateDB() {
 		datasource = new Datasource();
 		if(!datasource.open()) {
 			System.out.println("Can't open datasource");
@@ -94,6 +98,9 @@ public class BankDB {
 		return 0;
 	}
 	
+	public List<User> getUsers(){
+		return this.users;
+	}
 	public void updateBalance(int id, double amount) {
 		if(!datasource.open()) {
 			System.out.println("Could not open database");
@@ -110,10 +117,7 @@ public class BankDB {
 			credentials.put(users.get(i).getEmail(), users.get(i).getPassword());
 		}
 		
-//		System.out.println(credentials.toString());
 		if(credentials.containsKey(email)) {
-//			System.out.println(credentials.get(email));
-//			System.out.println("Length: " + credentials.get(email).length());
 			if(credentials.get(email).equals(password))
 				return true;
 		}

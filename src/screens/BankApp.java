@@ -43,7 +43,7 @@ public class BankApp extends JFrame implements ActionListener{
 	public static int id;
 
 	public BankApp(String email, String fullName, String userID) {
-		super("Nikko's Banking App (ID:" + id + ")"); 	
+		super("Nikko's Banking App (ID:" + userID + ")"); 	
 		this.userID = userID;
 		this.fullName = fullName;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		

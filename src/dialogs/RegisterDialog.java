@@ -1,7 +1,6 @@
 package dialogs;
 
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,23 +10,25 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import screens.Login;
+import screens.Register;
 import tools.DisabledPanel;
 
-public class LoginFailedDialog extends JDialog implements ActionListener{
-	private Login loginActivity;
+public class RegisterDialog extends JDialog implements ActionListener{
+	private Register registerActivity;
 	private int dialogWidth, dialogHeight;
 	private JButton buttonOk;
 	private JPanel labelPanel, buttonPanel;
-	private JLabel loginFailedLabel;
+	private JLabel registerFailedLabel;
+	private String message;
 	
-	public LoginFailedDialog(Login loginActivity, int dialogWidth, int dialogHeight) {
-		super(loginActivity);
-		this.loginActivity = loginActivity;
-		this.dialogWidth = dialogWidth/3;
+	public RegisterDialog(Register registerActivity, int dialogWidth, int dialogHeight, String message) {
+		super(registerActivity);
+		this.registerActivity = registerActivity;
+		this.dialogWidth = dialogWidth/2;
 		this.dialogHeight = dialogHeight/3;
+		this.message = message;
 		this.setSize(this.dialogWidth, this.dialogHeight);
-		this.setLocationRelativeTo(loginActivity);
+		this.setLocationRelativeTo(registerActivity);
 		this.setLayout(new GridLayout(2,1));
 		
 		addComponents();
@@ -47,10 +48,10 @@ public class LoginFailedDialog extends JDialog implements ActionListener{
 	}
 	
 	public void addLabels(JPanel labelPanel) {
-		loginFailedLabel = new JLabel("Error: Login Failed");
-		loginFailedLabel.setFont(new Font("Dialog", Font.BOLD, 12));
-		 
-		labelPanel.add(loginFailedLabel);
+		registerFailedLabel = new JLabel(this.message);
+		registerFailedLabel.setFont(new Font("Dialog", Font.BOLD, 12));
+		
+		labelPanel.add(registerFailedLabel);
 	}
 	
 	public void addButtons(JPanel buttonPanel) {
@@ -59,18 +60,17 @@ public class LoginFailedDialog extends JDialog implements ActionListener{
 		
 		buttonPanel.add(buttonOk);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String command = e.getActionCommand();
-		switch(command) {
+		// TODO Auto-generated method stub
+		switch(e.getActionCommand()) {
 			case "Ok":
-				this.loginActivity.setFocusableWindowState(true);
-				DisabledPanel.enable(this.loginActivity.getLoginPanel());
-				DisabledPanel.enable(this.loginActivity.getButtonPanel());
+				this.registerActivity.setFocusableWindowState(true);
+				DisabledPanel.enable(this.registerActivity.getUserPanel());
+				DisabledPanel.enable(this.registerActivity.getButtonPanel());
 				this.dispose();
 				break;
 		}
 	}
-	
 }
