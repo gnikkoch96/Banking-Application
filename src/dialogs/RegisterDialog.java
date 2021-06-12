@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -13,7 +15,7 @@ import javax.swing.JPanel;
 import screens.Register;
 import tools.DisabledPanel;
 
-public class RegisterDialog extends JDialog implements ActionListener{
+public class RegisterDialog extends JDialog implements ActionListener, WindowListener{
 	private Register registerActivity;
 	private int dialogWidth, dialogHeight;
 	private JButton buttonOk;
@@ -30,7 +32,7 @@ public class RegisterDialog extends JDialog implements ActionListener{
 		this.setSize(this.dialogWidth, this.dialogHeight);
 		this.setLocationRelativeTo(registerActivity);
 		this.setLayout(new GridLayout(2,1));
-		
+		this.addWindowListener(this);
 		addComponents();
 		
 		this.setVisible(true);
@@ -72,5 +74,49 @@ public class RegisterDialog extends JDialog implements ActionListener{
 				this.dispose();
 				break;
 		}
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		this.registerActivity.setFocusableWindowState(true);
+		DisabledPanel.enable(this.registerActivity.getUserPanel());
+		DisabledPanel.enable(this.registerActivity.getButtonPanel());
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

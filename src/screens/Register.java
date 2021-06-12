@@ -34,7 +34,7 @@ public class Register extends JFrame implements ActionListener {
 		private JLabel firstNameLabel, lastNameLabel, passwordLabel, verifyPasswordLabel, emailLabel;
 		private JTextField firstNameInput, lastNameInput, emailInput;
 		private JPasswordField passwordInput, verifyPasswordInput;
-		private JButton registerButton, backButton, exitButton;
+		private JButton registerButton, backButton;
 		
 		public Register() {
 			super("Nikko's Banking App Register");
@@ -135,13 +135,7 @@ public class Register extends JFrame implements ActionListener {
 			backButton.setPreferredSize(new Dimension(150,25));
 			backButton.setBackground(new Color(51, 204, 255));
 			backButton.addActionListener(this);
-			
-			exitButton = new JButton("Exit");
-			exitButton.setPreferredSize(new Dimension(150,25));
-			exitButton.setBackground(new Color(255,102,102));
-			exitButton.addActionListener(this);
-			
-			buttonPanel.add(exitButton);
+
 			buttonPanel.add(backButton);
 			
 		}
@@ -174,9 +168,6 @@ public class Register extends JFrame implements ActionListener {
 				case "Back":
 					this.dispose();
 					Login login = new Login();
-					break;
-				case "Exit":
-					System.exit(0);
 					break;
 				case "Register":
 					this.setFocusableWindowState(false);

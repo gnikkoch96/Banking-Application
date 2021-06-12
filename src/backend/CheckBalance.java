@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,7 +18,7 @@ import javax.swing.JTextField;
 import screens.BankApp;
 import tools.DisabledPanel;
 
-public class CheckBalance extends JFrame implements ActionListener {
+public class CheckBalance extends JFrame implements ActionListener, WindowListener{
 	private String userID;
 	private int frameWidth, frameHeight;
 	private double balance;
@@ -41,6 +43,7 @@ public class CheckBalance extends JFrame implements ActionListener {
 		this.setLayout(new BorderLayout(5, 60));
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);									// centers the frame
+		this.addWindowListener(this);
 		
 		// components
 		addComponents();
@@ -93,5 +96,48 @@ public class CheckBalance extends JFrame implements ActionListener {
 				System.exit(0);
 				break;
 		}
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		this.app.setFocusableWindowState(true);
+		DisabledPanel.enable(this.app.getButtonPanel());
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

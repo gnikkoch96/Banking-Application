@@ -14,7 +14,10 @@ import models.Transaction;
 public class Datasource {
 	// The database that we are trying to connect to (I made it within the project) 
 	public static final String DB_NAME = "BankApp.db";
-	public static final String CONNECTION_STRING = "jdbc:sqlite:C:\\Users\\Nikko\\Documents\\GitHub\\Banking-Application\\src\\" + DB_NAME;
+	public static final String DIRECTORY_PATH = System.getProperty("user.dir");
+	public static final String CONNECTION_STRING = "jdbc:sqlite:" + DIRECTORY_PATH + "\\src\\" + DB_NAME;
+//	public static final String CONNECTION_STRING = "jdbc:sqlite:resource:" + DB_NAME;
+
 
 	// Table Users
 	public static final String TABLE_USERS = "users";

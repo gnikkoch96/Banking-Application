@@ -5,6 +5,8 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -14,7 +16,7 @@ import javax.swing.JPanel;
 import screens.BankApp;
 import tools.DisabledPanel;
 
-public class LoginSuccessfulDialog extends JDialog implements ActionListener{
+public class LoginSuccessfulDialog extends JDialog implements ActionListener, WindowListener{
 	private JButton btnOk;
 	private JLabel loginSuccessfulLabel;
 	private JPanel buttonPanel, labelPanel;
@@ -26,7 +28,8 @@ public class LoginSuccessfulDialog extends JDialog implements ActionListener{
 		this.setSize(dialogWidth/3, dialogHeight/3);
 		this.setLocationRelativeTo(activity);
 		this.setLayout(new GridLayout(2,1));
-		
+		this.addWindowListener(this);
+
 		addComponents();
 		
 		this.setVisible(true);
@@ -68,5 +71,48 @@ public class LoginSuccessfulDialog extends JDialog implements ActionListener{
 				this.dispose();
 				break;
 		}
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		this.activity.setFocusableWindowState(true);
+		DisabledPanel.enable(this.activity.getButtonPanel());
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

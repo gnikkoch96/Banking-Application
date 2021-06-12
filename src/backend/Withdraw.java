@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,7 +20,7 @@ import screens.BankApp;
 import tools.DisabledPanel;
 import tools.InputValidation;
 
-public class Withdraw extends JFrame implements ActionListener{
+public class Withdraw extends JFrame implements ActionListener, WindowListener{
 	private static final String ACTIVITY = "Withdraw";
 	
 	private String userID;
@@ -46,6 +48,7 @@ public class Withdraw extends JFrame implements ActionListener{
 		this.setLayout(new BorderLayout(5, 30));
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);									// centers the frame
+		this.addWindowListener(this);
 		
 		// components
 		addComponents();
@@ -152,5 +155,48 @@ public class Withdraw extends JFrame implements ActionListener{
 				submit();
 				break;
 		}
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		this.app.setFocusableWindowState(true);
+		DisabledPanel.enable(this.app.getButtonPanel());
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

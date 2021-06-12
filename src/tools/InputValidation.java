@@ -21,20 +21,27 @@ public class InputValidation {
 	
 	public static boolean validateNumbers(String value) { // if it can't parse it then it isn't a possible value
 		try {
-			Double.parseDouble(value);
+			double num = Double.parseDouble(value);
 			try{
-				value.indexOf('.');
-			}catch(StringIndexOutOfBoundsException e2) {
-				if(value.substring(value.indexOf('.')).length() > 3){ // checks if the user is placing more than 2 digits after decimal
+				int dotIndex = value.indexOf('.');
+				if(dotIndex >= 0 && value.substring(dotIndex).length() > 3){ // checks if the user is placing more than 2 digits after decimal
 					MESSAGE = "Error: only 2 decimal places";
 					return false;
 				}
+			}catch(StringIndexOutOfBoundsException e) {
+				e.printStackTrace();
 			}
 			
 			if(value.charAt(0) == '-') {
 				MESSAGE = "Error: No negatives allowed";
 				return false;
 			}
+			
+			if(num == 0) {
+				MESSAGE = "Error: Can not be zero";
+				return false;
+			}
+			
 			return true;
 		}catch(NumberFormatException e){
 			MESSAGE = "Error: Improper Input";

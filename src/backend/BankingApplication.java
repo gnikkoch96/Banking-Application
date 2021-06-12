@@ -7,5 +7,6 @@ public class BankingApplication {
 	
 	public static void main(String args[]) {		
 		Login login = new Login();
+		System.out.println(System.getProperty("user.dir") + "\\src\\" + "BankApp.db");
 	}
 }
