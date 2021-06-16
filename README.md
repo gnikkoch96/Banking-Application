@@ -14,6 +14,9 @@
 2. SQLite
 3. SQLite Browser (GUI) 
 
+<h2> How to use </h2>
+<p> Clone this repository, and run the BankingApplication.java file. It should take you to the login GUI. </p>
+
 <h2> How it works </h2>
 <!--Login-->
 <h3> Login </h3>
@@ -65,7 +68,16 @@
 <h3> SQLite (Database) </h3>
 <p> For this project I had to review my Database knowledge again as its been awhile.</p>
 <p> The most import queries that I did for my project would be the SELECT and INSERT. SELECT would be used to query the past transactions from the table, while the INSERT command was used to insert deposit and withdraw transactions. </p>
+<p> I set my database through a GUI called the SQLite Browser (shown below) which can be downloaded on their site. This GUI allows me to execute SQL queries rather than having to do it through code. It made the whole process of setting up my database much easier than I thought it would have been </p>
+<img src="https://github.com/gnikkoch96/Banking-Application/blob/main/assets/Reference%20Image/Screenshot_8.png"/>
 
 <!-- 3. How to connect both of them --> 
+<h3> Connecting the Database to the GUI </h3>
+<p> I created a BankDB class that would query through the Datasource class. The Datasource class is the one that connects to the database using the Connection class. </p>
+<p> Statement and ResultSet where used a lot when querying data. Statement objects were used to create statements to be executed through the connected database. Whenever querying from the database, I had to use the ResultSet to obtain the list of data from executing the Statement which was usually in the format of (SELECT * FROM table). </p>
+<p> With access to the result set, I am able to iterate through each data to store within the corresponding type. In my case, I had only two, Transaction and User. </p>
+<p> The methods queryTransactionDetails(...) and queryUser() returned a list<type> where type is the corresponding type. BankDB will have access to these returned lists with their references to the list<transaction> and list <user> which can be accessed through othe rparts of the application (i.e. login, deposit, withdraw, and check past transactions)</p>
 
 <h2> What I Think Could be Improved On </h2>
+<p> I think what I screwed up on was not designing my project thoroughly. I noticed that I was reusing a lot of variables and methods like addComponents(). To fix this in the future, I would create a parent class that would contain all of the common methods and variables that is used and make each of those classes extend to them. </p>
+<p> Also, I believe that my naming convention and comments would require some work as well </p>
